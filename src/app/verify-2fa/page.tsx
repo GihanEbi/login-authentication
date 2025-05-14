@@ -13,11 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { useEffect, useState } from "react";
 
-export default function Setup2FA({ userId }: { userId: string }) {
+const Setup2FA = () => {
   const [qrCode, setQrCode] = useState("");
   const [token, setToken] = useState("");
   const [isVerified, setIsVerified] = useState(false);
@@ -56,11 +55,10 @@ export default function Setup2FA({ userId }: { userId: string }) {
 
     if (data.qrCodeUrl) {
       setQrCode(data.qrCodeUrl);
-      fetchUser()
+      fetchUser();
     } else {
       setError("Failed to generate QR code");
     }
-
   };
 
   // Step 2: Verify entered OTP
@@ -142,47 +140,9 @@ export default function Setup2FA({ userId }: { userId: string }) {
             </CardContent>
           </Card>
         </div>
-        {/* <div className="max-w-md mx-auto p-4 space-y-4 bg-white shadow rounded">
-        <h2 className="text-xl font-semibold">Set Up 2FA</h2>
-
-        {!qrCode ? (
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleSetup}
-          >
-            Generate QR Code
-          </button>
-        ) : (
-          <>
-            <p>Scan this QR code using Google or Microsoft Authenticator:</p>
-            <img src={qrCode} alt="2FA QR Code" className="mx-auto w-48 h-48" />
-
-            <input
-              type="text"
-              placeholder="Enter 6-digit code"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              className="border p-2 w-full rounded"
-            />
-
-            <button
-              className="bg-green-600 text-white px-4 py-2 rounded"
-              onClick={handleVerify}
-            >
-              Verify OTP
-            </button>
-          </>
-        )}
-
-        {isVerified && (
-          <p className="text-green-600">
-            ✅ 2FA has been successfully enabled!
-          </p>
-        )}
-
-        {error && <p className="text-red-600">❌ {error}</p>}
-      </div> */}
       </div>
     </div>
   );
-}
+};
+
+export default Setup2FA;
