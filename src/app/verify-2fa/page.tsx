@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 const Setup2FA = () => {
   const [qrCode, setQrCode] = useState("");
@@ -78,70 +78,72 @@ const Setup2FA = () => {
   };
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <div className={cn("flex flex-col gap-6")}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Set Up 2FA</CardTitle>
-              <CardDescription>
-                Setup 2 factor authentication to your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {!is2FAEnabled && (
-                <Button
-                  className="cursor-pointer w-full mt-3"
-                  onClick={() => {
-                    handleSetup();
-                  }}
-                >
-                  Generate QR Code
-                </Button>
-              )}
-              {qrCode && (
-                <>
-                  <p>
-                    Scan this QR code using Google or Microsoft Authenticator:
-                  </p>
-
-                  <img
-                    src={qrCode}
-                    alt="2FA QR Code"
-                    className="mx-auto w-48 h-48"
-                  />
-                </>
-              )}
-              {is2FAEnabled && (
-                <>
-                  <Input
-                    type="text"
-                    placeholder="Enter 6-digit code"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                  />
+    <Suspense>
+      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <div className={cn("flex flex-col gap-6")}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Set Up 2FA</CardTitle>
+                <CardDescription>
+                  Setup 2 factor authentication to your account
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {!is2FAEnabled && (
                   <Button
-                    className="w-full mt-3"
+                    className="cursor-pointer w-full mt-3"
                     onClick={() => {
-                      handleVerify();
+                      handleSetup();
                     }}
                   >
-                    Verify OTP
+                    Generate QR Code
                   </Button>
-
-                  {isVerified && (
-                    <p className="text-green-600">
-                      ✅ 2FA has been successfully enabled!
+                )}
+                {qrCode && (
+                  <>
+                    <p>
+                      Scan this QR code using Google or Microsoft Authenticator:
                     </p>
-                  )}
-                  {error && <p className="text-red-600">❌ {error}</p>}
-                </>
-              )}
-            </CardContent>
-          </Card>
+
+                    <img
+                      src={qrCode}
+                      alt="2FA QR Code"
+                      className="mx-auto w-48 h-48"
+                    />
+                  </>
+                )}
+                {is2FAEnabled && (
+                  <>
+                    <Input
+                      type="text"
+                      placeholder="Enter 6-digit code"
+                      value={token}
+                      onChange={(e) => setToken(e.target.value)}
+                    />
+                    <Button
+                      className="w-full mt-3"
+                      onClick={() => {
+                        handleVerify();
+                      }}
+                    >
+                      Verify OTP
+                    </Button>
+
+                    {isVerified && (
+                      <p className="text-green-600">
+                        ✅ 2FA has been successfully enabled!
+                      </p>
+                    )}
+                    {error && <p className="text-red-600">❌ {error}</p>}
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 
